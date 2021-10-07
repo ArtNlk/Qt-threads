@@ -11,8 +11,12 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+set(OpenCV_DIR "F:\\Files\\libs\\opencv\\build-sources")
+
 find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets REQUIRED)
+message(STATUS "Cmake moduels " ${CMAKE_MODULE_PATH})
+find_package(OpenCV REQUIRED)
 
 set(PROJECT_SOURCES
         main.cpp
@@ -45,6 +49,9 @@ else()
 endif()
 
 target_link_libraries(Qt-threads PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+target_link_libraries(Qt-threads PRIVATE ${OpenCV_LIBS})
+message(STATUS "Include dirs: " ${OpenCV_INCLUDE_DIRS})
+target_include_directories(Qt-threads PRIVATE ${OpenCV_INCLUDE_DIRS})
 
 set_target_properties(Qt-threads PROPERTIES
     MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com

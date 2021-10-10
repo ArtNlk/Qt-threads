@@ -19,34 +19,20 @@ message(STATUS "Cmake moduels " ${CMAKE_MODULE_PATH})
 find_package(OpenCV REQUIRED)
 
 set(PROJECT_SOURCES
-        main.cpp
-        mainwindow.cpp
-        mainwindow.h
-        mainwindow.ui
+    main.cpp
+    mainwindow.cpp
+    threadworker.cpp
+
 )
 
-if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
-    qt_add_executable(Qt-threads
-        MANUAL_FINALIZATION
-        ${PROJECT_SOURCES}
-    )
-# Define target properties for Android with Qt 6 as:
-#    set_property(TARGET Qt-threads APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
-#                 ${CMAKE_CURRENT_SOURCE_DIR}/android)
-# For more information, see https://doc.qt.io/qt-6/qt-add-executable.html#target-creation
-else()
-    if(ANDROID)
-        add_library(Qt-threads SHARED
-            ${PROJECT_SOURCES}
-        )
-# Define properties for Android with Qt 5 after find_package() calls as:
-#    set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/android")
-    else()
-        add_executable(Qt-threads
-            ${PROJECT_SOURCES}
-        )
-    endif()
-endif()
+set(PROJECT_HEADERS
+    threadworker.h
+    mainwindow.h)
+
+set(PROJECT_FORMS
+    mainwindow.ui)
+
+add_executable(Qt-threads ${PROJECT_SOURCES} ${PROJECT_HEADERS} ${PROJECT_FORMS})
 
 target_link_libraries(Qt-threads PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 target_link_libraries(Qt-threads PRIVATE ${OpenCV_LIBS})

@@ -3,6 +3,9 @@
 
 #include <QMainWindow>
 #include <QFileDialog>
+#include <QThread>
+
+#include "threadworker.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -23,7 +26,10 @@ public slots:
     void onSaveAction();
     void onExitAction();
 
-    void onSplitterMoved();
+    void onWorkerCompleted();
+
+private slots:
+    void on_applyButton_clicked();
 
 private:
     Ui::MainWindow *ui;
@@ -31,9 +37,15 @@ private:
     float scaleFactor;
 
     QImage originalImage;
+    QImage resultImage;
+
+    QThread workerThread;
+    ThreadWorker worker;
 
     static void initializeImageFileDialog(QFileDialog &dialog, QFileDialog::AcceptMode acceptMode);
 
     bool loadFile(const QString &fileName);
+
+    void resizeEvent(QResizeEvent*);
 };
 #endif // MAINWINDOW_H

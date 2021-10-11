@@ -9,10 +9,14 @@ class ThreadWorker : public QObject
 {
     Q_OBJECT
 public:
+    enum GradientDirection {
+        Both,
+        Vertical,
+        Horizontal
+    };
     explicit ThreadWorker(QObject *parent = nullptr);
 
-public slots:
-    void process(const QImage& input, QImage& output, int dx, int dy, int kernelSize, cv::BorderTypes borderType);
+    QImage process(QImage& input, int kernelSize, int gradOrder, cv::BorderTypes borderType, GradientDirection direction);
 
 signals:
     void completed();

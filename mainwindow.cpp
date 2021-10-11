@@ -33,7 +33,10 @@ void MainWindow::onOpenAction()
     QFileDialog dialog(this, tr("Open File"));
     initializeImageFileDialog(dialog, QFileDialog::AcceptOpen);
 
-    while (dialog.exec() == QDialog::Accepted && !loadFile(dialog.selectedFiles().constFirst())) {}
+    if(dialog.exec() == QDialog::Accepted && loadFile(dialog.selectedFiles().constFirst()))
+    {
+        ui->applyButton->setEnabled(true);
+    }
 }
 
 void MainWindow::onSaveAction()
@@ -44,11 +47,6 @@ void MainWindow::onSaveAction()
 void MainWindow::onExitAction()
 {
     this->close();
-}
-
-void MainWindow::onSplitterMoved()
-{
-
 }
 
 void MainWindow::initializeImageFileDialog(QFileDialog &dialog, QFileDialog::AcceptMode acceptMode)
@@ -97,3 +95,14 @@ bool MainWindow::loadFile(const QString &fileName)
 
     return true;
 }
+
+void MainWindow::resizeEvent(QResizeEvent *)
+{
+    ui->settingsFrame->setMaximumWidth(this->width()/3);
+}
+
+void MainWindow::on_applyButton_clicked()
+{
+
+}
+

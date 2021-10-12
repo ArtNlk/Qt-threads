@@ -126,6 +126,7 @@ bool MainWindow::loadFile(const QString &fileName)
                                  .arg(QDir::toNativeSeparators(fileName), reader.errorString()));
         return false;
     }
+    originalImage.convertTo(QImage::Format_RGB888);
     scaleFactor = 1.0;
 
     ui->imgArea->setVisible(true);
@@ -137,6 +138,7 @@ bool MainWindow::loadFile(const QString &fileName)
     ui->imgLabel->adjustSize();
 
     loaded = true;
+    processed = false;
 
     return true;
 }

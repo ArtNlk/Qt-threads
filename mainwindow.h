@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QFileDialog>
 #include <QThread>
+#include <QScrollBar>
 
 #include "threadworker.h"
 
@@ -26,13 +27,19 @@ public slots:
     void onSaveAction();
     void onExitAction();
 
-    void onWorkerCompleted();
+    void onWorkerCompleted(QImage result);
+
+signals:
+    void process(QImage input, int kernelSize, int borderType, int direction, bool normalize);
 
 private slots:
     void on_applyButton_clicked();
 
 private:
     Ui::MainWindow *ui;
+
+    bool loaded;
+    bool processed;
 
     float scaleFactor;
 
@@ -46,6 +53,10 @@ private:
 
     bool loadFile(const QString &fileName);
 
+    void updateImageSize(double factor);
+    void adjustScrollBar(QScrollBar *scrollBar, double factor);
+
     void resizeEvent(QResizeEvent*);
+    void keyPressEvent(QKeyEvent *e);
 };
 #endif // MAINWINDOW_H

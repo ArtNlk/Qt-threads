@@ -10,20 +10,21 @@ class ThreadWorker : public QObject
     Q_OBJECT
 public:
     enum GradientDirection {
-        Both,
-        Vertical,
-        Horizontal
+        None = 0,
+        Vertical = 1,
+        Horizontal = 2,
+        Both = 3
     };
     explicit ThreadWorker(QObject *parent = nullptr);
 
-    QImage process(QImage& input, int kernelSize, int gradOrder, cv::BorderTypes borderType, GradientDirection direction);
+public slots:
+    void process(QImage input, int kernelSize, int borderType, int direction, bool normalize);
 
 signals:
-    void completed();
-
+    void completed(QImage result);
 
 protected:
-    cv::Mat imageToMat(QImage& image);
+    cv::Mat imageToMat(const QImage& image);
     QImage matToImage(const cv::Mat& mat);
 };
 

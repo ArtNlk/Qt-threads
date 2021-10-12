@@ -13,13 +13,10 @@ ThreadWorker::ThreadWorker(QObject *parent) : QObject(parent)
 
 void ThreadWorker::process(QImage input, int kernelSize, int borderType, int direction, bool normalize)
 {
+    qDebug() << "Worker processing thread id: " << QThread::currentThreadId();
     cv::Mat mat = imageToMat(input);
     cv::Mat vMat;
     cv::Mat hMat;
-    double minVal;
-    double maxVal;
-    cv::Point minLoc;
-    cv::Point maxLoc;
     //QThread::sleep(5);
     qDebug() << "kSize = " << kernelSize <<
                 "borderType = " << borderType <<
@@ -33,14 +30,6 @@ void ThreadWorker::process(QImage input, int kernelSize, int borderType, int dir
             if(normalize)   cv::normalize(mat,mat,0,255,cv::NORM_MINMAX);
 
             emit completed(matToImage(mat));
-
-            cv::cvtColor(mat,mat,cv::COLOR_RGB2GRAY);
-
-            minMaxLoc(mat, &minVal, &maxVal, &minLoc, &maxLoc );
-
-            qDebug() << "min val: " << minVal;
-            qDebug() << "max val: " << maxVal;
-
             return;
         break;
 

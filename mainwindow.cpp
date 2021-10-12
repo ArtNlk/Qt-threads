@@ -15,6 +15,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    qDebug() << "Main thread id: " << QThread::currentThreadId();
+
     this->setWindowTitle(tr("Sobel filter"));
 
     for(int i = 1; i < 16; i++)
@@ -81,8 +83,8 @@ void MainWindow::onWorkerCompleted(QImage result)
     qDebug() << "Worker done";
     processed = true;
     resultImage = result;
-    ui->imgLabel->setPixmap(QPixmap::fromImage(resultImage));
-    ui->imgLabel->adjustSize();
+    ui->imgLabel->setPixmap(QPixmap::fromImage(resultImage).scaled(resultImage.size()*scaleFactor));
+    //ui->imgLabel->adjustSize();
 
     ui->settingsBox->setEnabled(true);
     ui->action_Save->setEnabled(true);
